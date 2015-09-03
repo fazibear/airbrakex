@@ -32,7 +32,7 @@ defmodule Airbrakex.Notifier do
 
   defp url do
     project_id = Application.get_env(:airbrakex, :project_id)
-    api_key = Application.get_env(:airbrakex, :api_key)
-    "http://collect.airbrake.io/api/v3/projects/#{project_id}/notices?key=#{api_key}"
+    project_key = Application.get_env(:airbrakex, :project_key)
+    "http://collect.airbrake.io/api/v3/projects/#{project_id}/notices?key=#{project_key}"
   end
 end

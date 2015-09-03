@@ -16,13 +16,13 @@ Then run `mix deps.get` in your shell to fetch the dependencies.
 
 ### Configuration
 
-It requires `api_key` and `project` parameters to be set
+It requires `project_key` and `project` parameters to be set
 in your application environment, usually defined in your `config/config.exs`.
 `logger_level` and `environment` are optional.
 
 ```elixir
 config :airbrakex,
-  api_key: "abcdef12345",
+  project_key: "abcdef12345",
   project_id: 123456,
   logger_level: :error,
   environment: Mix.env

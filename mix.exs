@@ -6,7 +6,7 @@ defmodule Airbrakex.Mixfile do
       app: :airbrakex,
       version: "0.0.1",
       elixir: "~> 1.0",
-      description: "Airbrake Reporter for Elixir Logger",
+      description: "Airbrake Elixir Notifier",
       package: package,
       deps: deps
    ]

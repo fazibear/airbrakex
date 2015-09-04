@@ -47,3 +47,8 @@ which could be configured as follows:
 config :logger,
   backends: [Airbrakex.LoggerBackend]
 ```
+
+## Thankx
+ - [Airbrake Elixir](https://github.com/romul/airbrake-elixir)
+ - [AirbrakePlug](https://github.com/romul/airbrake_plug)
+ - [Rollbax](https://github.com/elixir-addicts/rollbax)

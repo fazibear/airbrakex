@@ -19,7 +19,7 @@ defmodule Airbrakex.Plug do
             Airbrakex.ExceptionParser.parse(exception)
             |> Airbrakex.Notifier.notify([params: conn.params, session: session])
 
-            reraise exception, stacktrace
+            reraise exception, System.stacktrace
         end
       end
     end

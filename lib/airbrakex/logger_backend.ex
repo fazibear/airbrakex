@@ -15,7 +15,7 @@ defmodule Airbrakex.LoggerBackend do
 
   def handle_event({level, _gl, event}, %{metadata: keys} = state) do
     if proceed?(event) and meet_level?(level, state.level) do
-      post_event(level, event, keys)
+      post_event(event, keys)
     end
     {:ok, state}
   end
@@ -28,10 +28,10 @@ defmodule Airbrakex.LoggerBackend do
     Logger.compare_levels(lvl, min) != :lt
   end
 
-  defp post_event(level, {Logger, msg, _ts, meta}, keys) do
+  defp post_event({Logger, msg, _ts, meta}, keys) do
     msg = IO.chardata_to_string(msg)
-    _meta = take_into_map(meta, keys)
-    Airbrakex.LoggerParser.parse(msg) |> Airbrakex.Notifier.notify
+    meta = take_into_map(meta, keys)
+    Airbrakex.LoggerParser.parse(msg) |> Airbrakex.Notifier.notify([params: meta])
   end
 
   defp take_into_map(metadata, keys) do

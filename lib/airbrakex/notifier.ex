@@ -9,26 +9,43 @@ defmodule Airbrakex.Notifier do
     url: Airbrakex.Mixfile.project[:package][:links][:github]
   }
 
-  @context %{
-    language: "Elixir",
-    environment: Application.get_env(:airbrakex, :environment, :unknown)
-  }
+  def notify(error, options \\ []) do
+    payload = %{}
+    |> add_notifier
+    |> add_error(error)
+    |> add_context(Keyword.get(options, :context))
+    |> add(:session, Keyword.get(options, :session))
+    |> add(:params, Keyword.get(options, :params))
+    |> add(:environment, Keyword.get(options, :environment))
+    |> Poison.encode!
 
-  def notify(error) do
-    post(
-      url,
-      to_json(error),
-      @request_headers
-    )
+    IO.puts payload
+
+    post(url, payload, @request_headers)
   end
 
-  def to_json(error) do
-    Poison.encode! %{
-      notifier: @info,
-      context: @context,
-      errors: [error]
-    }
+  defp add_notifier(payload) do
+    payload |> Dict.put(:notifier, @info)
   end
+
+  defp add_error(payload, nil), do: payload
+  defp add_error(payload, error) do
+    payload |> Dict.put(:error, error)
+  end
+
+  defp add_context(payload, nil), do: payload
+  defp add_context(payload, context) do
+    if !context[:environment] do
+      context = context |> Dict.put(:environment, Application.get_env(:airbrakex, :environment, Mix.env))
+    end
+    if !context[:language] do
+      context = context |> Dict.put(:language, "Elixir")
+    end
+    payload |> Dict.put(:context, context)
+  end
+
+  defp add(payload, _key, nil), do: payload
+  defp add(payload, key, value), do: Dict.put(payload, key, value)
 
   defp url do
     project_id = Application.get_env(:airbrakex, :project_id)

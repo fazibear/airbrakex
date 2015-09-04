@@ -8,7 +8,7 @@ Add Airbrakex as a dependency to your `mix.exs` file:
 
 ```elixir
 defp deps() do
-  [{:airbrakex, "~> 0.0.2"}]
+  [{:airbrakex, "~> 0.0.3"}]
 end
 ```
 
@@ -46,6 +46,19 @@ which could be configured as follows:
 ```elixir
 config :logger,
   backends: [Airbrakex.LoggerBackend]
+```
+
+### Plug
+
+You can plug `Airbrakex.Plug` in your web application Plug stack to send all exception to Airbrake
+
+```elixir
+defmodule YourApp.Router do
+  use Phoenix.Router
+  use Airbrakex.Plug
+
+  # ...
+end
 ```
 
 ## Thankx

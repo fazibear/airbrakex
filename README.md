@@ -7,8 +7,12 @@ Elixir client for the [Airbrake](http://airbrake.com) service!
 Add Airbrakex as a dependency to your `mix.exs` file:
 
 ```elixir
-defp deps() do
-  [{:airbrakex, "~> 0.0.3"}]
+def application do
+  [applications: [:airbrakex]]
+end
+
+defp deps do
+  [{:airbrakex, "~> 0.0.4"}]
 end
 ```
 

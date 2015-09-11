@@ -2,6 +2,7 @@ defmodule Airbrakex.Notifier do
   use HTTPoison.Base
 
   @request_headers [{"Content-Type", "application/json"}]
+  @default_endpoint "http://collect.airbrake.io"
 
   @info %{
     name: "Airbrakex",
@@ -51,6 +52,7 @@ defmodule Airbrakex.Notifier do
   defp url do
     project_id = Application.get_env(:airbrakex, :project_id)
     project_key = Application.get_env(:airbrakex, :project_key)
-    "http://collect.airbrake.io/api/v3/projects/#{project_id}/notices?key=#{project_key}"
+    endpoint = Application.get_env(:airbrakex, :endpoint, @default_endpoint)
+    "#{endpoint}/api/v3/projects/#{project_id}/notices?key=#{project_key}"
   end
 end

@@ -23,7 +23,7 @@ Then run `mix deps.get` in your shell to fetch the dependencies.
 It requires `project_key` and `project` parameters to be set
 in your application environment, usually defined in your `config/config.exs`.
 `logger_level` and `environment` are optional.
-If you want to use errbit instance, set custom url as endopoint.
+If you want to use errbit instance, set custom url as endpoint.
 
 ```elixir
 config :airbrakex,

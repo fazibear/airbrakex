@@ -16,11 +16,17 @@ defmodule Airbrakex.Plug do
           exception ->
             session = Map.get(conn.private, :plug_session)
 
-            Airbrakex.ExceptionParser.parse(exception)
-            |> Airbrakex.Notifier.notify([params: conn.params, session: session])
+            if logging_enabled? do
+              Airbrakex.ExceptionParser.parse(exception)
+              |> Airbrakex.Notifier.notify([params: conn.params, session: session])
+            end
 
             reraise exception, System.stacktrace
         end
+      end
+
+      defp logging_enabled? do
+        Enum.member?(Application.get_env(:airbrakex, :logging_enabled_environments), Mix.env)
       end
     end
   end

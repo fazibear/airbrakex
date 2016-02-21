@@ -14,7 +14,7 @@ defmodule Airbrakex.Mixfile do
 
   def package do
     [
-      contributors: ["Michał Kalbarczyk"],
+      maintainers: ["Michał Kalbarczyk"],
       licenses: ["MIT"],
       links: %{github: "https://github.com/fazibear/airbrakex"}
    ]

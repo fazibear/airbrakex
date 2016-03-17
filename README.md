@@ -23,7 +23,8 @@ Then run `mix deps.get` in your shell to fetch the dependencies.
 It requires `project_key` and `project` parameters to be set
 in your application environment, usually defined in your `config/config.exs`.
 `logger_level` and `environment` are optional.
-If you want to use errbit instance, set custom url as endpoint.
+
+If you want to use errbit instance, set custom url as `endpoint`.
 
 ```elixir
 config :airbrakex,
@@ -33,6 +34,19 @@ config :airbrakex,
   environment: Mix.env,
   endpoint: "http://errbit.yourdomain.com"
 ```
+
+For production environments **is not recommended using Mix.env as value**, it will fail if you don't include :mix as a dependency (Mix is supposed to be used only in dev or build envs). 
+
+You can use something like this instead:
+
+In `config/prod.exs` or `config/prod.secret.exs`
+```elixir
+config :airbrakex,
+  ...
+  environment: :prod
+  ...
+```
+
 
 ## Usage
 

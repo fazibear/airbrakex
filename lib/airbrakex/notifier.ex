@@ -17,7 +17,7 @@ defmodule Airbrakex.Notifier do
     |> add_context(Keyword.get(options, :context))
     |> add(:session, Keyword.get(options, :session))
     |> add(:params, Keyword.get(options, :params))
-    |> add(:environment, Keyword.get(options, :environment, %{}))
+    |> add(:environment, Keyword.get(options, :environment, %{empty: true}))
     |> Poison.encode!
 
     post(url, payload, @request_headers)
@@ -33,12 +33,12 @@ defmodule Airbrakex.Notifier do
   end
 
   defp add_context(payload, nil) do
-    payload |> Dict.put(:context, %{environment: Application.get_env(:airbrakex, :environment, Mix.env)})
+    payload |> Dict.put(:context, %{environment: Application.get_env(:airbrakex, :environment, :prod)})
   end
 
   defp add_context(payload, context) do
     if !context[:environment] do
-      context = context |> Dict.put(:environment, Application.get_env(:airbrakex, :environment, Mix.env))
+      context = context |> Dict.put(:environment, Application.get_env(:airbrakex, :environment, :prod))
     end
     if !context[:language] do
       context = context |> Dict.put(:language, "Elixir")

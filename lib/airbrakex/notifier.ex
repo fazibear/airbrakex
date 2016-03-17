@@ -33,12 +33,12 @@ defmodule Airbrakex.Notifier do
   end
 
   defp add_context(payload, nil) do
-    payload |> Dict.put(:context, %{environment: Application.get_env(:airbrakex, :environment, Mix.env)})
+    payload |> Dict.put(:context, %{environment: Application.get_env(:airbrakex, :environment, :prod)})
   end
 
   defp add_context(payload, context) do
     if !context[:environment] do
-      context = context |> Dict.put(:environment, Application.get_env(:airbrakex, :environment, Mix.env))
+      context = context |> Dict.put(:environment, Application.get_env(:airbrakex, :environment, :prod))
     end
     if !context[:language] do
       context = context |> Dict.put(:language, "Elixir")

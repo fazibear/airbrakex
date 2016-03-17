@@ -17,7 +17,7 @@ defmodule Airbrakex.Notifier do
     |> add_context(Keyword.get(options, :context))
     |> add(:session, Keyword.get(options, :session))
     |> add(:params, Keyword.get(options, :params))
-    |> add(:environment, Keyword.get(options, :environment, %{}))
+    |> add(:environment, Keyword.get(options, :environment, %{empty: true}))
     |> Poison.encode!
 
     post(url, payload, @request_headers)

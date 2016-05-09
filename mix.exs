@@ -4,7 +4,7 @@ defmodule Airbrakex.Mixfile do
   def project do
     [
       app: :airbrakex,
-      version: "0.0.6",
+      version: "0.0.7",
       elixir: "~> 1.0",
       description: "Airbrake Elixir Notifier",
       package: package,

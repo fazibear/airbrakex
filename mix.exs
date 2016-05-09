@@ -22,14 +22,14 @@ defmodule Airbrakex.Mixfile do
 
   def application do
     [
-      applications: [:idna, :hackney, :httpoison]
+      applications: [:poison, :httpoison]
     ]
   end
 
   defp deps do
     [
       {:httpoison, "~> 0.8"},
-      {:poison, "~> 2.0"}
+      {:poison, "~> 1.5 or ~> 2.0"}
     ]
   end
 end

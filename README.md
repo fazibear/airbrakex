@@ -1,6 +1,6 @@
 # Airbrakex ![Package Version](https://img.shields.io/hexpm/v/airbrakex.svg)
 
-Elixir client for the [Airbrake](http://airbrake.com) service!
+Elixir client for the [Airbrake](https://airbrake.io) service!
 
 ## Installation
 

@@ -1,7 +1,12 @@
-%{"certifi": {:hex, :certifi, "0.3.0"},
+%{"bypass": {:hex, :bypass, "0.5.1"},
+  "certifi": {:hex, :certifi, "0.3.0"},
+  "cowboy": {:hex, :cowboy, "1.0.4"},
+  "cowlib": {:hex, :cowlib, "1.0.2"},
   "hackney": {:hex, :hackney, "1.4.8"},
   "httpoison": {:hex, :httpoison, "0.8.1"},
   "idna": {:hex, :idna, "1.0.3"},
   "mimerl": {:hex, :mimerl, "1.0.2"},
+  "plug": {:hex, :plug, "1.1.6"},
   "poison": {:hex, :poison, "2.1.0"},
+  "ranch": {:hex, :ranch, "1.2.1"},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"}}

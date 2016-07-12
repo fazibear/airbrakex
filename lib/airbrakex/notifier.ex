@@ -25,35 +25,38 @@ defmodule Airbrakex.Notifier do
   end
 
   defp add_notifier(payload) do
-    payload |> Dict.put(:notifier, @info)
+    Map.put(payload, :notifier, @info)
   end
 
   defp add_error(payload, nil), do: payload
   defp add_error(payload, error) do
-    payload |> Dict.put(:errors, [error])
+    Map.put(payload, :errors, [error])
   end
 
   defp add_context(payload, nil) do
-    payload |> Dict.put(:context, %{environment: Application.get_env(:airbrakex, :environment, @default_env)})
+    Map.put(payload, :context, %{environment: env()})
   end
 
   defp add_context(payload, context) do
-    if !context[:environment] do
-      context = context |> Dict.put(:environment, Application.get_env(:airbrakex, :environment, @default_env))
-    end
-    if !context[:language] do
-      context = context |> Dict.put(:language, "Elixir")
-    end
-    payload |> Dict.put(:context, context)
+    context = context
+    |> Map.put_new(:environment, env())
+    |> Map.put_new(:language, "Elixir")
+
+    Map.put(payload, :context, context)
   end
 
   defp add(payload, _key, nil), do: payload
-  defp add(payload, key, value), do: Dict.put(payload, key, value)
+  defp add(payload, key, value), do: Map.put(payload, key, value)
 
   defp url do
     project_id = Application.get_env(:airbrakex, :project_id)
     project_key = Application.get_env(:airbrakex, :project_key)
     endpoint = Application.get_env(:airbrakex, :endpoint, @default_endpoint)
+
     "#{endpoint}/api/v3/projects/#{project_id}/notices?key=#{project_key}"
+  end
+
+  defp env do
+    Application.get_env(:airbrakex, :environment, @default_env)
   end
 end

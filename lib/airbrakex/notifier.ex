@@ -31,7 +31,8 @@ defmodule Airbrakex.Notifier do
   defp add_error(payload, nil), do: payload
   defp add_error(payload, error) do
     payload |> Map.put(:errors, [error])
-  en
+  end
+
   defp add_context(payload, nil) do
     payload |> Map.put(:context, %{environment: environment})
   end

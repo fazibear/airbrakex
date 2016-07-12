@@ -16,12 +16,27 @@ defmodule Airbrakex.Plug do
           exception ->
             session = Map.get(conn.private, :plug_session)
 
-            Airbrakex.ExceptionParser.parse(exception)
-            |> Airbrakex.Notifier.notify([params: conn.params, session: session])
+            error = Airbrakex.ExceptionParser.parse(exception)
+            if proceed?(error) do
+              Airbrakex.Notifier.notify(error, [params: conn.params, session: session])
+            end
 
             reraise exception, System.stacktrace
         end
       end
+
+      defp proceed?(error) do
+        ignore = Application.get_env(:airbrakex, :ignore)
+        cond do
+          is_nil(ignore) -> true
+          is_function(ignore) -> !ignore.(error)
+          is_list(ignore) -> !Enum.any?(ignore, fn(el) -> el == error.type end)
+          true -> true
+        end
+      end
     end
   end
+
+
+
 end

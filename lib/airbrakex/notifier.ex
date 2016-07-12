@@ -25,16 +25,16 @@ defmodule Airbrakex.Notifier do
   end
 
   defp add_notifier(payload) do
-    Map.put(payload, :notifier, @info)
+    payload |> Map.put(:notifier, @info)
   end
 
   defp add_error(payload, nil), do: payload
   defp add_error(payload, error) do
-    Map.put(payload, :errors, [error])
+    payload |> Map.put(:errors, [error])
   end
 
   defp add_context(payload, nil) do
-    Map.put(payload, :context, %{environment: env()})
+    payload |> Map.put(:context, %{environment: env()})
   end
 
   defp add_context(payload, context) do
@@ -42,11 +42,11 @@ defmodule Airbrakex.Notifier do
     |> Map.put_new(:environment, env())
     |> Map.put_new(:language, "Elixir")
 
-    Map.put(payload, :context, context)
+    payload |> Map.put(:context, context)
   end
 
   defp add(payload, _key, nil), do: payload
-  defp add(payload, key, value), do: Map.put(payload, key, value)
+  defp add(payload, key, value), do: payload |> Map.put(key, value)
 
   defp url do
     project_id = Application.get_env(:airbrakex, :project_id)

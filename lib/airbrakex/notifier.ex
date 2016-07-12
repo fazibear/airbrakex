@@ -31,15 +31,14 @@ defmodule Airbrakex.Notifier do
   defp add_error(payload, nil), do: payload
   defp add_error(payload, error) do
     payload |> Map.put(:errors, [error])
-  end
-
+  en
   defp add_context(payload, nil) do
-    payload |> Map.put(:context, %{environment: env()})
+    payload |> Map.put(:context, %{environment: environment})
   end
 
   defp add_context(payload, context) do
     context = context
-    |> Map.put_new(:environment, env())
+    |> Map.put_new(:environment, environment)
     |> Map.put_new(:language, "Elixir")
 
     payload |> Map.put(:context, context)
@@ -56,7 +55,7 @@ defmodule Airbrakex.Notifier do
     "#{endpoint}/api/v3/projects/#{project_id}/notices?key=#{project_key}"
   end
 
-  defp env do
+  defp environment do
     Application.get_env(:airbrakex, :environment, @default_env)
   end
 end

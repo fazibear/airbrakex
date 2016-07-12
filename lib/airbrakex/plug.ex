@@ -17,7 +17,7 @@ defmodule Airbrakex.Plug do
             session = Map.get(conn.private, :plug_session)
 
             error = Airbrakex.ExceptionParser.parse(exception)
-            if proceed?(error) do
+            if proceed?(Application.get_env(:airbrakex, :ignore), error) do
               Airbrakex.Notifier.notify(error, [params: conn.params, session: session])
             end
 
@@ -25,15 +25,9 @@ defmodule Airbrakex.Plug do
         end
       end
 
-      defp proceed?(error) do
-        ignore = Application.get_env(:airbrakex, :ignore)
-        cond do
-          is_nil(ignore) -> true
-          is_function(ignore) -> !ignore.(error)
-          is_list(ignore) -> !Enum.any?(ignore, fn(el) -> el == error.type end)
-          true -> true
-        end
-      end
+      defp proceed?(ignore, _error) when is_nil(ignore), do: true
+      defp proceed?(ignore, error) when is_function(ignore), do: !ignore.(error)
+      defp proceed?(ignore, error) when is_list(ignore), do: !Enum.any?(ignore, fn(el) -> el == error.type end)
     end
   end
 

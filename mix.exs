@@ -28,7 +28,7 @@ defmodule Airbrakex.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 0.8"},
+      {:httpoison, "~> 0.9"},
       {:poison, "~> 1.5 or ~> 2.0"},
       {:bypass, "~> 0.1", only: :test}
     ]

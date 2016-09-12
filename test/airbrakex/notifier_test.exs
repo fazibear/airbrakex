@@ -88,4 +88,22 @@ defmodule Airbrakex.NotifierTest do
 
     Airbrakex.Notifier.notify(error, [params: %{foo: "bar"}])
   end
+
+  test "evaluates system environment if specified", %{bypass: bypass, error: error} do
+    System.put_env("AIR_TEST_ID", "airbrakex_id")
+    System.put_env("AIR_TEST_KEY", "airbrakex_key")
+
+    Application.put_env(:airbrakex, :project_id, {:system, "AIR_TEST_ID"})
+    Application.put_env(:airbrakex, :project_key, {:system, "AIR_TEST_KEY"})
+
+    Bypass.expect bypass, fn conn ->
+      assert "/api/v3/projects/airbrakex_id/notices" == conn.request_path
+      assert "POST" == conn.method
+      assert "key=airbrakex_key" == conn.query_string
+
+      Plug.Conn.resp(conn, 200, "")
+    end
+
+    Airbrakex.Notifier.notify(error)
+  end
 end

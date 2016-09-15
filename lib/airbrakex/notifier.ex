@@ -1,5 +1,6 @@
 defmodule Airbrakex.Notifier do
   use HTTPoison.Base
+  alias Airbrakex.Config
 
   @request_headers [{"Content-Type", "application/json"}]
   @default_endpoint "http://collect.airbrake.io"
@@ -49,14 +50,14 @@ defmodule Airbrakex.Notifier do
   defp add(payload, key, value), do: payload |> Map.put(key, value)
 
   defp url do
-    project_id = Application.get_env(:airbrakex, :project_id)
-    project_key = Application.get_env(:airbrakex, :project_key)
-    endpoint = Application.get_env(:airbrakex, :endpoint, @default_endpoint)
+    project_id = Config.get(:airbrakex, :project_id)
+    project_key = Config.get(:airbrakex, :project_key)
+    endpoint = Config.get(:airbrakex, :endpoint, @default_endpoint)
 
     "#{endpoint}/api/v3/projects/#{project_id}/notices?key=#{project_key}"
   end
 
   defp environment do
-    Application.get_env(:airbrakex, :environment, @default_env)
+    Config.get(:airbrakex, :environment, @default_env)
   end
 end

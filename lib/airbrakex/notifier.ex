@@ -1,4 +1,5 @@
 defmodule Airbrakex.Notifier do
+  @moduledoc false
   use HTTPoison.Base
   alias Airbrakex.Config
 

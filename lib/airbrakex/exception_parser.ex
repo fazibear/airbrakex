@@ -1,4 +1,6 @@
 defmodule Airbrakex.ExceptionParser do
+  @moduledoc false
+
   def parse(exception) do
     %{
       type: exception.__struct__,

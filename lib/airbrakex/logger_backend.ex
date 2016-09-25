@@ -1,4 +1,15 @@
 defmodule Airbrakex.LoggerBackend do
+  @moduledoc """
+  A Logger backend to send exceptions from logs to the `airbrake`
+
+  ## Usage
+
+  ```elixir
+  config :logger,
+    backends: [Airbrakex.LoggerBackend]
+  ```
+  """
+
   use GenEvent
 
   def init(__MODULE__) do

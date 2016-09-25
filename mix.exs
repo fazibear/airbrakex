@@ -9,7 +9,7 @@ defmodule Airbrakex.Mixfile do
       description: "Airbrake Elixir Notifier",
       package: package,
       deps: deps
-   ]
+    ]
   end
 
   def package do
@@ -30,7 +30,8 @@ defmodule Airbrakex.Mixfile do
     [
       {:httpoison, "~> 0.9"},
       {:poison, "~> 1.5 or ~> 2.0"},
-      {:bypass, "~> 0.1", only: :test}
+      {:bypass, "~> 0.1", only: :test},
+      {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
 end

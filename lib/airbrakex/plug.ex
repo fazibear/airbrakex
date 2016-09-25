@@ -1,4 +1,16 @@
 defmodule Airbrakex.Plug do
+  @moduledoc """
+  You can plug `Airbrakex.Plug` in your web application Plug stack to send all exception to `airbrake`
+
+  ```elixir
+  defmodule YourApp.Router do
+    use Phoenix.Router
+    use Airbrakex.Plug
+
+    # ...
+  end
+  ```
+  """
   defmacro __using__(_env) do
     quote location: :keep do
       @before_compile Airbrakex.Plug

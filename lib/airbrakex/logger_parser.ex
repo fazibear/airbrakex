@@ -1,4 +1,5 @@
 defmodule Airbrakex.LoggerParser do
+  @moduledoc false
   @stacktrace_regex ~r/^\s*(?<file>\([^()]+\)\s+[^:]+):(?<line>\d+):(?<function>.*)/m
   @type_regex ~r/^\s*\*\*\s*\((?<type>[^()]+)\)/m
   @exception_header_regex ~r/an exception was raised:/

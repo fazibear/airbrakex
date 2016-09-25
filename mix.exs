@@ -8,7 +8,11 @@ defmodule Airbrakex.Mixfile do
       elixir: "~> 1.0",
       description: "Airbrake Elixir Notifier",
       package: package,
-      deps: deps
+      deps: deps,
+      docs: [
+        main: Airbrakex,
+        source_url: "https://github.com/fazibear/airbrakex"
+      ]
     ]
   end
 

@@ -7,5 +7,5 @@ ratings:
   paths:
   - "**.ex"
   - "**.exs"
-include_paths:
-- lib/
+exclude_paths:
+- test/

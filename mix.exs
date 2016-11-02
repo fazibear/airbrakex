@@ -35,7 +35,8 @@ defmodule Airbrakex.Mixfile do
       {:httpoison, "~> 0.9"},
       {:poison, "~> 1.5 or ~> 2.0"},
       {:bypass, "~> 0.1", only: :test},
-      {:ex_doc, ">= 0.0.0", only: :dev}
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:credo, "~> 0.4.0", only: :dev},
     ]
   end
 end

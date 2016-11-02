@@ -12,6 +12,8 @@ defmodule Airbrakex.LoggerBackend do
 
   use GenEvent
 
+  alias Airbrakex.{LoggerBackend, Notifier}
+
   def init(__MODULE__) do
     {:ok, configure([])}
   end
@@ -42,7 +44,10 @@ defmodule Airbrakex.LoggerBackend do
   defp post_event({Logger, msg, _ts, meta}, keys) do
     msg = IO.chardata_to_string(msg)
     meta = take_into_map(meta, keys)
-    Airbrakex.LoggerParser.parse(msg) |> Airbrakex.Notifier.notify([params: meta])
+
+    msg
+    |> LoggerParser.parse
+    |> Notifier.notify([params: meta])
   end
 
   defp take_into_map(metadata, keys) do
@@ -52,7 +57,9 @@ defmodule Airbrakex.LoggerBackend do
   end
 
   defp configure(opts) do
-    config = Application.get_env(:logger, __MODULE__, []) |> Keyword.merge(opts)
+    config = :logger
+             |> Application.get_env(__MODULE__, [])
+             |> Keyword.merge(opts)
 
     Application.put_env(:logger, __MODULE__, config)
 

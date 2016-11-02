@@ -1,6 +1,7 @@
 defmodule Airbrakex.Plug do
   @moduledoc """
-  You can plug `Airbrakex.Plug` in your web application Plug stack to send all exception to `airbrake`
+  You can plug `Airbrakex.Plug` in your web application Plug stack
+  to send all exception to `airbrake`
 
   ```elixir
   defmodule YourApp.Router do
@@ -11,6 +12,9 @@ defmodule Airbrakex.Plug do
   end
   ```
   """
+
+  alias Airbrakex.{ExceptionParser, Notifier}
+
   defmacro __using__(_env) do
     quote location: :keep do
       @before_compile Airbrakex.Plug
@@ -28,9 +32,9 @@ defmodule Airbrakex.Plug do
           exception ->
             session = Map.get(conn.private, :plug_session)
 
-            error = Airbrakex.ExceptionParser.parse(exception)
+            error = ExceptionParser.parse(exception)
             if proceed?(Application.get_env(:airbrakex, :ignore), error) do
-              Airbrakex.Notifier.notify(error, [params: conn.params, session: session])
+              Notifier.notify(error, [params: conn.params, session: session])
             end
 
             reraise exception, System.stacktrace

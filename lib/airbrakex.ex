@@ -48,6 +48,8 @@ defmodule Airbrakex do
   ```
   """
 
+  alias Airbrakex.{ExceptionParser, Notifier}
+
   @doc """
   Notify `airbrake` obout new exception
 
@@ -66,6 +68,8 @@ defmodule Airbrakex do
     - environment
   """
   def notify(exception, options \\ []) do
-    Airbrakex.ExceptionParser.parse(exception) |> Airbrakex.Notifier.notify(options)
+    exception
+    |> ExceptionParser.parse
+    |> Notifier.notify(options)
   end
 end

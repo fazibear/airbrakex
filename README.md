@@ -67,6 +67,26 @@ defmodule YourApp.Router do
 end
 ```
 
+You can ignore certain types of errors by specifying `:ignore` config key:
+
+```elixir
+config :airbrakex,
+  ...
+  # List form
+  ignore: [Phoenix.Router.NoRouteError]
+  # OR
+  # Function
+  ignore: fn(error) ->
+    cond do
+      error.type == Phoenix.Router.NoRouteError -> true
+      String.contains?(error.message, "Ecto.NoResultsError") -> true
+      true -> false
+    end
+  end
+```
+
+
+
 ## Thankx
  - [Airbrake Elixir](https://github.com/romul/airbrake-elixir)
  - [AirbrakePlug](https://github.com/romul/airbrake_plug)

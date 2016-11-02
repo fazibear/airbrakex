@@ -28,6 +28,24 @@ defmodule Airbrakex do
     exception -> Airbrakex.notify(exception)
   end
   ```
+
+  You can ignore certain types of errors by specifying `:ignore` config key:
+
+  ```elixir
+  config :airbrakex,
+    ...
+    # List form
+    ignore: [Phoenix.Router.NoRouteError]
+    # OR
+    # Function
+    ignore: fn(error) ->
+      cond do
+        error.type == Phoenix.Router.NoRouteError -> true
+        String.contains?(error.message, "Ecto.NoResultsError") -> true
+        true -> false
+      end
+    end
+  ```
   """
 
   @doc """

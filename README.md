@@ -1,5 +1,4 @@
-# Airbrakex ![Package Version](https://img.shields.io/hexpm/v/airbrakex.svg)
-
+# Airbrakex ![Package Version](https://img.shields.io/hexpm/v/airbrakex.svg) [![Code Climate](https://codeclimate.com/github/fazibear/airbrakex/badges/gpa.svg)](https://codeclimate.com/github/fazibear/airbrakex) [![Build Status](https://travis-ci.org/fazibear/airbrakex.svg?branch=master)](https://travis-ci.org/fazibear/airbrakex)
 Elixir client for the [Airbrake](https://airbrake.io) service!
 
 ## Installation

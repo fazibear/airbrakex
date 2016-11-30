@@ -66,6 +66,8 @@ defmodule YourApp.Router do
 end
 ```
 
+### Ignore
+
 You can ignore certain types of errors by specifying `:ignore` config key:
 
 ```elixir

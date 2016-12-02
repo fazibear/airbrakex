@@ -33,6 +33,10 @@ defmodule Airbrakex.LoggerBackend do
     {:ok, state}
   end
 
+  def handle_event(:flush, state) do
+    {:ok, state}
+  end
+
   defp proceed?({Logger, _msg, _ts, meta}) do
     Keyword.get(meta, :airbrakex, true)
   end

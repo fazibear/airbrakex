@@ -12,7 +12,7 @@ defmodule Airbrakex.LoggerBackend do
 
   use GenEvent
 
-  alias Airbrakex.{LoggerBackend, Notifier}
+  alias Airbrakex.{LoggerParser, Notifier}
 
   def init(__MODULE__) do
     {:ok, configure([])}
@@ -30,6 +30,10 @@ defmodule Airbrakex.LoggerBackend do
     if proceed?(event) and meet_level?(level, state.level) do
       post_event(event, keys)
     end
+    {:ok, state}
+  end
+
+  def handle_event(:flush, state) do
     {:ok, state}
   end
 

@@ -12,7 +12,7 @@ defmodule Airbrakex.LoggerBackend do
 
   use GenEvent
 
-  alias Airbrakex.{LoggerBackend, LoggerParser, Notifier}
+  alias Airbrakex.{LoggerParser, Notifier}
 
   def init(__MODULE__) do
     {:ok, configure([])}

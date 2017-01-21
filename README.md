@@ -11,7 +11,7 @@ def application do
 end
 
 defp deps do
-  [{:airbrakex, "~> 0.1.0"}]
+  [{:airbrakex, "~> 0.1.2"}]
 end
 ```
 

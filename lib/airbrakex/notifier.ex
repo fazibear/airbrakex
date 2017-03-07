@@ -17,6 +17,7 @@ defmodule Airbrakex.Notifier do
     payload = %{}
     |> add_notifier
     |> add_error(error)
+    |> add_environment
     |> add_context(Keyword.get(options, :context))
     |> add(:session, Keyword.get(options, :session))
     |> add(:params, Keyword.get(options, :params))
@@ -33,6 +34,10 @@ defmodule Airbrakex.Notifier do
   defp add_error(payload, nil), do: payload
   defp add_error(payload, error) do
     payload |> Map.put(:errors, [error])
+  end
+
+  defp add_environment(payload) do
+    payload |> Dict.put(:environment, %{})
   end
 
   defp add_context(payload, nil) do

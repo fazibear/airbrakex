@@ -23,7 +23,7 @@ defmodule Airbrakex.Notifier do
     |> add(:environment, Keyword.get(options, :environment, %{}))
     |> Poison.encode!
 
-    post(url, payload, @request_headers)
+    post(url(), payload, @request_headers)
   end
 
   defp add_notifier(payload) do
@@ -36,12 +36,12 @@ defmodule Airbrakex.Notifier do
   end
 
   defp add_context(payload, nil) do
-    payload |> Map.put(:context, %{environment: environment})
+    payload |> Map.put(:context, %{environment: environment()})
   end
 
   defp add_context(payload, context) do
     context = context
-    |> Map.put_new(:environment, environment)
+    |> Map.put_new(:environment, environment())
     |> Map.put_new(:language, "Elixir")
 
     payload |> Map.put(:context, context)

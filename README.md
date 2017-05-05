@@ -6,14 +6,19 @@ Elixir client for the [Airbrake](https://airbrake.io) service!
 Add Airbrakex as a dependency to your `mix.exs` file:
 
 ```elixir
-def application do
-  [applications: [:airbrakex]]
-end
-
 defp deps do
   [{:airbrakex, "~> 0.1.2"}]
 end
 ```
+
+If on Elixir 1.3 or lower you will need to add it to your applications.
+
+```elixir
+def application do
+  [applications: [:airbrakex]]
+end
+```
+
 
 Then run `mix deps.get` in your shell to fetch the dependencies.
 
@@ -50,7 +55,7 @@ which could be configured as follows:
 
 ```elixir
 config :logger,
-  backends: [Airbrakex.LoggerBackend]
+  backends: [:console, Airbrakex.LoggerBackend]
 ```
 
 ### Plug

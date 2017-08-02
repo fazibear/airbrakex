@@ -4,7 +4,7 @@ defmodule Airbrakex.Mixfile do
   def project do
     [
       app: :airbrakex,
-      version: "0.1.3",
+      version: "0.1.4",
       elixir: "~> 1.0",
       description: "Airbrake Elixir Notifier",
       package: package(),
@@ -32,11 +32,11 @@ defmodule Airbrakex.Mixfile do
 
   defp deps() do
     [
-      {:httpoison, "~> 0.9"},
+      {:httpoison, "~> 0.12"},
       {:poison, "~> 1.5 or ~> 2.0 or ~> 3.0"},
-      {:bypass, "~> 0.1", only: :test},
+      {:bypass, "~> 0.8", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:credo, "~> 0.5.0", only: :dev},
+      {:credo, "~> 0.8.0", only: :dev},
     ]
   end
 end

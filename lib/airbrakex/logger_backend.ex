@@ -10,7 +10,7 @@ defmodule Airbrakex.LoggerBackend do
   ```
   """
 
-  use GenEvent
+  @behaviour :gen_event
 
   alias Airbrakex.{LoggerParser, Notifier}
 
@@ -35,6 +35,18 @@ defmodule Airbrakex.LoggerBackend do
 
   def handle_event(:flush, state) do
     {:ok, state}
+  end
+
+  def handle_info(_message, state) do
+    {:noreply, state}
+  end
+
+  def code_change(_old_vsn, state, _extra) do
+    {:ok, state}
+  end
+
+  def termitate(_reason, _state) do
+    :ok
   end
 
   defp proceed?({Logger, _msg, _ts, meta}) do

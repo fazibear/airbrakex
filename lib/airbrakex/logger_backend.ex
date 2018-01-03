@@ -45,7 +45,7 @@ defmodule Airbrakex.LoggerBackend do
     {:ok, state}
   end
 
-  def termitate(_reason, _state) do
+  def terminate(_reason, _state) do
     :ok
   end
 

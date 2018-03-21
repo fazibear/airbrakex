@@ -15,7 +15,7 @@ defmodule Airbrakex.Config do
   end
 
   defp get_config({:system, env_var}, default) do
-    case env_var |> System.get_env do
+    case env_var |> System.get_env() do
       nil ->
         default
 
@@ -25,7 +25,7 @@ defmodule Airbrakex.Config do
   end
 
   defp get_config({:system, env_var, preconfigured_default}, _default) do
-    case env_var |> System.get_env do
+    case env_var |> System.get_env() do
       nil ->
         preconfigured_default
 

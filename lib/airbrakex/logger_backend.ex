@@ -30,6 +30,7 @@ defmodule Airbrakex.LoggerBackend do
     if proceed?(event) and meet_level?(level, state.level) do
       post_event(event, keys)
     end
+
     {:ok, state}
   end
 
@@ -62,20 +63,21 @@ defmodule Airbrakex.LoggerBackend do
     meta = take_into_map(meta, keys)
 
     msg
-    |> LoggerParser.parse
-    |> Notifier.notify([params: meta])
+    |> LoggerParser.parse()
+    |> Notifier.notify(params: meta)
   end
 
   defp take_into_map(metadata, keys) do
-    Enum.reduce metadata, %{}, fn({key, val}, acc) ->
+    Enum.reduce(metadata, %{}, fn {key, val}, acc ->
       if key in keys, do: Map.put(acc, key, val), else: acc
-    end
+    end)
   end
 
   defp configure(opts) do
-    config = :logger
-             |> Application.get_env(__MODULE__, [])
-             |> Keyword.merge(opts)
+    config =
+      :logger
+      |> Application.get_env(__MODULE__, [])
+      |> Keyword.merge(opts)
 
     Application.put_env(:logger, __MODULE__, config)
 

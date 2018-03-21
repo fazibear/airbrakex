@@ -69,7 +69,7 @@ defmodule Airbrakex do
   """
   def notify(exception, options \\ []) do
     exception
-    |> ExceptionParser.parse
+    |> ExceptionParser.parse()
     |> Notifier.notify(options)
   end
 end

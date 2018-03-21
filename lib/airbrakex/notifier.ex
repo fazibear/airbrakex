@@ -5,23 +5,24 @@ defmodule Airbrakex.Notifier do
 
   @request_headers [{"Content-Type", "application/json"}]
   @default_endpoint "https://airbrake.io"
-  @default_env Mix.env
+  @default_env Mix.env()
 
   @info %{
     name: "Airbrakex",
-    version: Airbrakex.Mixfile.project[:version],
-    url: Airbrakex.Mixfile.project[:package][:links][:github]
+    version: Airbrakex.Mixfile.project()[:version],
+    url: Airbrakex.Mixfile.project()[:package][:links][:github]
   }
 
   def notify(error, options \\ []) do
-    payload = %{}
-    |> add_notifier
-    |> add_error(error)
-    |> add_context(Keyword.get(options, :context))
-    |> add(:session, Keyword.get(options, :session))
-    |> add(:params, Keyword.get(options, :params))
-    |> add(:environment, Keyword.get(options, :environment, %{}))
-    |> Poison.encode!
+    payload =
+      %{}
+      |> add_notifier
+      |> add_error(error)
+      |> add_context(Keyword.get(options, :context))
+      |> add(:session, Keyword.get(options, :session))
+      |> add(:params, Keyword.get(options, :params))
+      |> add(:environment, Keyword.get(options, :environment, %{}))
+      |> Poison.encode!()
 
     post(url(), payload, @request_headers)
   end
@@ -31,6 +32,7 @@ defmodule Airbrakex.Notifier do
   end
 
   defp add_error(payload, nil), do: payload
+
   defp add_error(payload, error) do
     payload |> Map.put(:errors, [error])
   end
@@ -40,9 +42,10 @@ defmodule Airbrakex.Notifier do
   end
 
   defp add_context(payload, context) do
-    context = context
-    |> Map.put_new(:environment, environment())
-    |> Map.put_new(:language, "Elixir")
+    context =
+      context
+      |> Map.put_new(:environment, environment())
+      |> Map.put_new(:language, "Elixir")
 
     payload |> Map.put(:context, context)
   end

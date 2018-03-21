@@ -2,11 +2,12 @@ defmodule Airbrakex.ExceptionParserTest do
   use ExUnit.Case
 
   test "parses exception" do
-    exception = try do
-      IO.inspect("test", [], "")
-    rescue
-      e -> e
-    end
+    exception =
+      try do
+        IO.inspect("test", [], "")
+      rescue
+        e -> e
+      end
 
     parsed_exception = Airbrakex.ExceptionParser.parse(exception)
 
@@ -17,14 +18,19 @@ defmodule Airbrakex.ExceptionParserTest do
     assert type == FunctionClauseError
     assert message == "no function clause matching in IO.inspect/3"
 
-    backtrace_files = Enum.map(backtrace, fn(entry) -> entry[:file] end)
+    backtrace_files = Enum.map(backtrace, fn entry -> entry[:file] end)
 
     assert Enum.member?(backtrace_files, "(Elixir.IO) lib/io.ex")
-    assert Enum.member?(backtrace_files, "(Elixir.Airbrakex.ExceptionParserTest) test/airbrakex/exception_parser_test.exs")
+
+    assert Enum.member?(
+             backtrace_files,
+             "(Elixir.Airbrakex.ExceptionParserTest) test/airbrakex/exception_parser_test.exs"
+           )
+
     assert Enum.member?(backtrace_files, "(timer) timer.erl")
     assert Enum.member?(backtrace_files, "(Elixir.ExUnit.Runner) lib/ex_unit/runner.ex")
 
-    backtrace_functions = Enum.map(backtrace, fn(entry) -> entry[:function] end)
+    backtrace_functions = Enum.map(backtrace, fn entry -> entry[:function] end)
 
     assert Enum.member?(backtrace_functions, "inspect(\"test\", [], \"\")")
     assert Enum.member?(backtrace_functions, "test parses exception/1")

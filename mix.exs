@@ -32,7 +32,7 @@ defmodule Airbrakex.Mixfile do
 
   defp deps() do
     [
-      {:httpoison, "~> 0.12"},
+      {:httpoison, "~> 0.12 or ~> 1.0"},
       {:poison, "~> 1.5 or ~> 2.0 or ~> 3.0"},
       {:bypass, "~> 0.8", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},

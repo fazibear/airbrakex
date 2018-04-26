@@ -35,7 +35,7 @@ defmodule Airbrakex.Plug do
             error = ExceptionParser.parse(exception)
 
             if proceed?(Application.get_env(:airbrakex, :ignore), error) do
-              Notifier.notify(error, params: conn.params, session: session)
+              Notifier.notify(error, params: conn.params, session: session, context: %{url: request_url(conn)})
             end
 
             reraise exception, System.stacktrace()
@@ -47,6 +47,25 @@ defmodule Airbrakex.Plug do
 
       defp proceed?(ignore, error) when is_list(ignore),
         do: !Enum.any?(ignore, fn el -> el == error.type end)
+
+      # Taken from Plug 1.5
+      def request_url(%{} = conn) do
+        IO.iodata_to_binary([
+          to_string(conn.scheme),
+          "://",
+          conn.host,
+          request_url_port(conn.scheme, conn.port),
+          conn.request_path,
+          request_url_qs(conn.query_string)
+        ])
+      end
+
+      defp request_url_port(:http, 80), do: ""
+      defp request_url_port(:https, 443), do: ""
+      defp request_url_port(_, port), do: [?:, Integer.to_string(port)]
+
+      defp request_url_qs(""), do: ""
+      defp request_url_qs(qs), do: [??, qs]
     end
   end
 end

@@ -39,7 +39,7 @@ defmodule Airbrakex.LoggerBackend do
   end
 
   def handle_info(_message, state) do
-    {:noreply, state}
+    {:ok, state}
   end
 
   def code_change(_old_vsn, state, _extra) do

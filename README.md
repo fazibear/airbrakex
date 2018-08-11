@@ -97,3 +97,7 @@ config :airbrakex,
  - [Airbrake Elixir](https://github.com/romul/airbrake-elixir)
  - [AirbrakePlug](https://github.com/romul/airbrake_plug)
  - [Rollbax](https://github.com/elixir-addicts/rollbax)
+
+## Thank you!
+
+[![Become Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=6912974)

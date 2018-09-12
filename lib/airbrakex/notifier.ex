@@ -67,7 +67,6 @@ defmodule Airbrakex.Notifier do
     Config.get(:airbrakex, :environment, @default_env)
   end
 
-
   defp proceed?(ignore, _error) when is_nil(ignore), do: true
   defp proceed?(ignore, error) when is_function(ignore), do: !ignore.(error)
 

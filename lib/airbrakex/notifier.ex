@@ -14,17 +14,19 @@ defmodule Airbrakex.Notifier do
   }
 
   def notify(error, options \\ []) do
-    payload =
-      %{}
-      |> add_notifier
-      |> add_error(error)
-      |> add_context(Keyword.get(options, :context))
-      |> add(:session, Keyword.get(options, :session))
-      |> add(:params, Keyword.get(options, :params))
-      |> add(:environment, Keyword.get(options, :environment, %{}))
-      |> Poison.encode!()
+    if proceed?(Application.get_env(:airbrakex, :ignore), error) do
+      payload =
+        %{}
+        |> add_notifier
+        |> add_error(error)
+        |> add_context(Keyword.get(options, :context))
+        |> add(:session, Keyword.get(options, :session))
+        |> add(:params, Keyword.get(options, :params))
+        |> add(:environment, Keyword.get(options, :environment, %{}))
+        |> Poison.encode!()
 
-    post(url(), payload, @request_headers)
+      post(url(), payload, @request_headers)
+    end
   end
 
   defp add_notifier(payload) do
@@ -64,4 +66,11 @@ defmodule Airbrakex.Notifier do
   defp environment do
     Config.get(:airbrakex, :environment, @default_env)
   end
+
+
+  defp proceed?(ignore, _error) when is_nil(ignore), do: true
+  defp proceed?(ignore, error) when is_function(ignore), do: !ignore.(error)
+
+  defp proceed?(ignore, error) when is_list(ignore),
+    do: !Enum.any?(ignore, fn el -> el == error.type end)
 end

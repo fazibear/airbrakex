@@ -34,9 +34,7 @@ defmodule Airbrakex.Plug do
 
             error = ExceptionParser.parse(exception)
 
-
             Notifier.notify(error, params: conn.params, session: session)
-
 
             reraise exception, System.stacktrace()
         end

@@ -9,6 +9,7 @@ defmodule Airbrakex.NotifierTest do
     Application.put_env(:airbrakex, :endpoint, "http://localhost:#{bypass.port}")
     Application.put_env(:airbrakex, :project_id, @project_id)
     Application.put_env(:airbrakex, :project_key, @project_key)
+    Application.put_env(:airbrakex, :ignore, fn(_) -> false end)
 
     error =
       try do
@@ -108,6 +109,14 @@ defmodule Airbrakex.NotifierTest do
     Airbrakex.Notifier.notify(error)
   end
 
+  test "does not notify if ignore resolves truthy", %{bypass: bypass, error: error} do
+    Application.put_env(:airbrakex, :ignore, fn(_) -> true end)
+
+    Bypass.pass(bypass)
+
+    Airbrakex.Notifier.notify(error)
+  end
+  
   test "passes http_options to the HTTPoison request", %{bypass: bypass, error: error} do
     Application.put_env(:airbrakex, :http_options, params: [custom_param: "custom_value"])
 

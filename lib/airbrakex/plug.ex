@@ -34,19 +34,11 @@ defmodule Airbrakex.Plug do
 
             error = ExceptionParser.parse(exception)
 
-            if proceed?(Application.get_env(:airbrakex, :ignore), error) do
-              Notifier.notify(error, params: conn.params, session: session)
-            end
+            Notifier.notify(error, params: conn.params, session: session)
 
             reraise exception, System.stacktrace()
         end
       end
-
-      defp proceed?(ignore, _error) when is_nil(ignore), do: true
-      defp proceed?(ignore, error) when is_function(ignore), do: !ignore.(error)
-
-      defp proceed?(ignore, error) when is_list(ignore),
-        do: !Enum.any?(ignore, fn el -> el == error.type end)
     end
   end
 end

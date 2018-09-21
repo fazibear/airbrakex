@@ -25,7 +25,8 @@ defmodule Airbrakex.Notifier do
         |> add(:environment, Keyword.get(options, :environment, %{}))
         |> Poison.encode!()
 
-    post(url(), payload, @request_headers, http_options())
+      post(url(), payload, @request_headers, http_options())
+    end
   end
 
   defp add_notifier(payload) do

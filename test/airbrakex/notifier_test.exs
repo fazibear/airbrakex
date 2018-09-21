@@ -107,4 +107,19 @@ defmodule Airbrakex.NotifierTest do
 
     Airbrakex.Notifier.notify(error)
   end
+
+  test "passes http_options to the HTTPoison request", %{bypass: bypass, error: error} do
+    Application.put_env(:airbrakex, :http_options, params: [custom_param: "custom_value"])
+
+    Bypass.expect(bypass, fn conn ->
+      assert "/api/v3/projects/#{@project_id}/notices" == conn.request_path
+      assert "POST" == conn.method
+      assert "key=#{@project_key}&custom_param=custom_value" == conn.query_string
+
+      Plug.Conn.resp(conn, 200, "")
+    end)
+
+    Airbrakex.Notifier.notify(error)
+    Application.delete_env(:airbrakex, :http_options)
+  end
 end

@@ -27,7 +27,6 @@ Then run `mix deps.get` in your shell to fetch the dependencies.
 It requires `project_key` and `project` parameters to be set
 in your application environment, usually defined in your `config/config.exs`.
 `logger_level` and `environment` are optional.
-If you want to use errbit instance, set custom url as endpoint.
 
 ```elixir
 config :airbrakex,
@@ -35,7 +34,21 @@ config :airbrakex,
   project_id: 123456,
   logger_level: :error,
   environment: Mix.env,
-  endpoint: "http://errbit.yourdomain.com"
+```
+
+#### Advanced Configuration
+
+If you want to use errbit instance, set custom url as `endpoint`.
+If you connect through a proxy or need to pass other specific options to
+`HTTPoison` you can use `http_options`, see https://hexdocs.pm/httpoison/HTTPoison.html#request/5
+for a list of the available options.
+
+```elixir
+config :airbrakex,
+  project_key: "abcdef12345",
+  project_id: 123456,
+  endpoint: "http://errbit.yourdomain.com",
+  http_options: [ssl: [cacertfile: "/path/to/certfile.pem"]]
 ```
 
 ## Usage

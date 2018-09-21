@@ -25,8 +25,7 @@ defmodule Airbrakex.Notifier do
         |> add(:environment, Keyword.get(options, :environment, %{}))
         |> Poison.encode!()
 
-      post(url(), payload, @request_headers)
-    end
+    post(url(), payload, @request_headers, http_options())
   end
 
   defp add_notifier(payload) do
@@ -61,6 +60,10 @@ defmodule Airbrakex.Notifier do
     endpoint = Config.get(:airbrakex, :endpoint, @default_endpoint)
 
     "#{endpoint}/api/v3/projects/#{project_id}/notices?key=#{project_key}"
+  end
+
+  defp http_options do
+    Config.get(:airbrakex, :http_options) || []
   end
 
   defp environment do

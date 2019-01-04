@@ -51,16 +51,16 @@ defmodule Airbrakex do
   alias Airbrakex.{ExceptionParser, Notifier}
 
   @doc """
-  Notify `airbrake` obout new exception
+  Notify `airbrake` about new exception
 
   ## Parameters
 
-    - exception: Exception to nitify
+    - exception: Exception to notify
     - options: Options
 
   ## Options
 
-  Options that are sent do `airbrake` with execptions:
+  Options that are sent to `airbrake` with exceptions:
 
     - context
     - session

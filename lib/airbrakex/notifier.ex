@@ -72,6 +72,7 @@ defmodule Airbrakex.Notifier do
   end
 
   defp proceed?(ignore, _error) when is_nil(ignore), do: true
+  defp proceed?({module, function, []}, error), do: !apply(module, function, [error])
   defp proceed?(ignore, error) when is_function(ignore), do: !ignore.(error)
 
   defp proceed?(ignore, error) when is_list(ignore),

@@ -26,14 +26,14 @@ defmodule Airbrakex.Mixfile do
 
   def application() do
     [
-      applications: [:poison, :httpoison]
+      applications: [:httpoison]
     ]
   end
 
   defp deps() do
     [
       {:httpoison, "~> 0.12 or ~> 1.0"},
-      {:poison, "~> 1.5 or ~> 2.0 or ~> 3.0"},
+      {:jason, "~> 1.1"},
       {:bypass, "~> 0.8", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:credo, "~> 1.0.0", only: :dev, runtime: false}

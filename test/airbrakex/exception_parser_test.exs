@@ -37,10 +37,19 @@ defmodule Airbrakex.ExceptionParserTest do
     assert Enum.member?(backtrace_functions, "exec_test/1")
     assert Enum.member?(backtrace_functions, "tc/1")
 
-    if :lt == Version.compare(System.version(), "1.6.0") do
-      assert Enum.member?(backtrace_functions, "-spawn_test/3-fun-1-/3")
-    else
-      assert Enum.member?(backtrace_functions, "-spawn_test/3-fun-1-/4")
-    end
+    compare = &Version.compare(System.version(), &1)
+
+    spawn_test =
+      if :lt == compare.("1.6.0") do
+        "-spawn_test/3-fun-1-/3"
+      else
+        if :lt == compare.("1.8.0") do
+          "-spawn_test/3-fun-1-/4"
+        else
+          "-spawn_test_monitor/4-fun-1-/4"
+        end
+      end
+
+    assert Enum.member?(backtrace_functions, spawn_test)
   end
 end

@@ -37,7 +37,7 @@ defmodule Airbrakex.NotifierTest do
   test "notifies with with a proper payload", %{bypass: bypass, error: error} do
     Bypass.expect(bypass, fn conn ->
       # Calling parser to populate `body_params`.
-      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Poison]
+      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Jason]
       conn = Plug.Parsers.call(conn, Plug.Parsers.init(opts))
 
       assert Map.has_key?(conn.body_params, "notifier")
@@ -53,7 +53,7 @@ defmodule Airbrakex.NotifierTest do
 
   test "notifies when empty context is provided as an option", %{bypass: bypass, error: error} do
     Bypass.expect(bypass, fn conn ->
-      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Poison]
+      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Jason]
       conn = Plug.Parsers.call(conn, Plug.Parsers.init(opts))
 
       assert "Elixir" == conn.body_params["context"]["language"]
@@ -67,7 +67,7 @@ defmodule Airbrakex.NotifierTest do
 
   test "notifies with session if it's provided", %{bypass: bypass, error: error} do
     Bypass.expect(bypass, fn conn ->
-      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Poison]
+      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Jason]
       conn = Plug.Parsers.call(conn, Plug.Parsers.init(opts))
 
       assert %{"foo" => "bar"} == conn.body_params["session"]
@@ -80,7 +80,7 @@ defmodule Airbrakex.NotifierTest do
 
   test "notifies with additional params if they're provided", %{bypass: bypass, error: error} do
     Bypass.expect(bypass, fn conn ->
-      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Poison]
+      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Jason]
       conn = Plug.Parsers.call(conn, Plug.Parsers.init(opts))
 
       assert %{"foo" => "bar"} == conn.body_params["params"]

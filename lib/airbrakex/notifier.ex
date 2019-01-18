@@ -23,7 +23,7 @@ defmodule Airbrakex.Notifier do
         |> add(:session, Keyword.get(options, :session))
         |> add(:params, Keyword.get(options, :params))
         |> add(:environment, Keyword.get(options, :environment, %{}))
-        |> Poison.encode!()
+        |> Jason.encode!()
 
       post(url(), payload, @request_headers, http_options())
     end
@@ -36,6 +36,8 @@ defmodule Airbrakex.Notifier do
   defp add_error(payload, nil), do: payload
 
   defp add_error(payload, error) do
+    error = Map.from_struct(error)
+
     payload |> Map.put(:errors, [error])
   end
 

@@ -29,7 +29,7 @@ defmodule Airbrakex do
   end
   ```
 
-  You can ignore certain types of errors by specifying `:ignore` config key:
+  You can ignore all errors or certain types of errors by specifying `:ignore` config key:
 
   ```elixir
   config :airbrakex,
@@ -45,6 +45,10 @@ defmodule Airbrakex do
         true -> false
       end
     end
+    # OR
+    # Boolean
+    # Ignore all errors (from :test environment, for example)
+    ignore: true
   ```
   """
 

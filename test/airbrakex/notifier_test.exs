@@ -117,6 +117,14 @@ defmodule Airbrakex.NotifierTest do
     Airbrakex.Notifier.notify(error)
   end
 
+  test "accepts boolean as ignore value", %{bypass: bypass, error: error} do
+    Application.put_env(:airbrakex, :ignore, true)
+
+    Bypass.pass(bypass)
+
+    Airbrakex.Notifier.notify(error)
+  end
+
   test "accepts MFA tuple as ignore value", %{bypass: bypass, error: error} do
     defmodule IgnoreTest do
       def ignore(_error) do
@@ -130,7 +138,7 @@ defmodule Airbrakex.NotifierTest do
 
     Airbrakex.Notifier.notify(error)
   end
-  
+
   test "passes http_options to the HTTPoison request", %{bypass: bypass, error: error} do
     Application.put_env(:airbrakex, :http_options, params: [custom_param: "custom_value"])
 

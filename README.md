@@ -33,7 +33,7 @@ config :airbrakex,
   project_key: "abcdef12345",
   project_id: 123456,
   logger_level: :error,
-  environment: Mix.env,
+  environment: Mix.env
 ```
 
 #### Advanced Configuration

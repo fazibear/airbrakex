@@ -34,7 +34,11 @@ defmodule Airbrakex.Plug do
 
             error = ExceptionParser.parse(exception)
 
-            _ = Notifier.notify(error, params: conn.params, session: session)
+            _ = Notifier.notify(error,
+              params: conn.params,
+              session: session,
+              context: %{url: Plug.Conn.request_url(conn)}
+            )
 
             reraise exception, System.stacktrace()
         end

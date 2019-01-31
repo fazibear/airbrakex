@@ -36,10 +36,13 @@ defmodule Airbrakex.Notifier do
   defp add_error(payload, nil), do: payload
 
   defp add_error(payload, error) do
-    error = Map.from_struct(error)
+    error = get_error_as_map(error)
 
     payload |> Map.put(:errors, [error])
   end
+
+  defp get_error_as_map(%{__struct__: _} = error), do: Map.from_struct(error)
+  defp get_error_as_map(error), do: error
 
   defp add_context(payload, nil) do
     payload |> Map.put(:context, %{environment: environment()})

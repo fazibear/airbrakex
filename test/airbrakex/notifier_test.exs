@@ -4,6 +4,18 @@ defmodule Airbrakex.NotifierTest do
   @project_id "project_id"
   @project_key "project_key"
 
+  defmodule SpecificError do
+    defexception [:message]
+  end
+
+  def fetch_error(fun) do
+    try do
+      fun.()
+    rescue
+      e -> e
+    end
+  end
+
   setup do
     bypass = Bypass.open()
     Application.put_env(:airbrakex, :endpoint, "http://localhost:#{bypass.port}")
@@ -11,12 +23,7 @@ defmodule Airbrakex.NotifierTest do
     Application.put_env(:airbrakex, :project_key, @project_key)
     Application.put_env(:airbrakex, :ignore, fn _ -> false end)
 
-    error =
-      try do
-        IO.inspect("test", [], "")
-      rescue
-        e -> e
-      end
+    error = fetch_error(fn -> IO.inspect("test", [], "") end)
 
     {:ok, bypass: bypass, error: error}
   end
@@ -113,6 +120,48 @@ defmodule Airbrakex.NotifierTest do
     Application.put_env(:airbrakex, :ignore, fn _ -> true end)
 
     Bypass.pass(bypass)
+
+    Airbrakex.Notifier.notify(error)
+  end
+
+  test "does not notify if error in ignore list", %{bypass: bypass} do
+    Application.put_env(:airbrakex, :ignore, [SpecificError])
+
+    error_to_ignore = fetch_error(fn -> raise SpecificError, "A type A error" end)
+
+    Bypass.pass(bypass)
+
+    Airbrakex.Notifier.notify(error_to_ignore)
+  end
+
+  test "notifies if error not in ignore list", %{bypass: bypass} do
+    Application.put_env(:airbrakex, :ignore, [AnotherError])
+
+    error = fetch_error(fn -> raise SpecificError, "A type A error" end)
+
+    Bypass.expect(bypass, fn conn ->
+      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Jason]
+      conn = Plug.Parsers.call(conn, Plug.Parsers.init(opts))
+
+      assert "/api/v3/projects/project_id/notices" == conn.request_path
+      assert "POST" == conn.method
+      assert "key=project_key" == conn.query_string
+
+      %{
+        "errors" => [
+          %{
+            "__exception__" => true,
+            "message" => message,
+            "type" => type
+          }
+        ]
+      } = conn.body_params
+
+      assert message == "A type A error"
+      assert type == "Airbrakex.NotifierTest.SpecificError"
+
+      Plug.Conn.resp(conn, 200, "")
+    end)
 
     Airbrakex.Notifier.notify(error)
   end

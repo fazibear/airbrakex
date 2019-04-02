@@ -86,15 +86,18 @@ defmodule Airbrakex.Notifier do
 
   defp proceed?(ignore, error) when is_list(ignore) do
     type = error_type(error)
-    !Enum.any?(ignore, &(&1 == type))
+    !Enum.any?(ignore, &(ignore_type(&1) == type))
   end
 
   defp error_type(%{type: type}) when is_binary(type), do: type
   defp error_type(%{type: type}) when is_atom(type), do: to_string(type)
+  defp error_type(%{__struct__: type}) when is_atom(type), do: to_string_type(type)
+  defp error_type(_), do: nil
 
-  defp error_type(%{__struct__: type}) when is_atom(type) do
+  defp ignore_type(type) when is_binary(type), do: type
+  defp ignore_type(type) when is_atom(type), do: to_string_type(type)
+
+  defp to_string_type(type) when is_atom(type) do
     type |> to_string |> String.replace(~r/^Elixir\./, "")
   end
-
-  defp error_type(_), do: nil
 end

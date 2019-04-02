@@ -129,8 +129,6 @@ defmodule Airbrakex.NotifierTest do
 
     error_to_ignore = fetch_error(fn -> raise SpecificError, "A type A error" end)
 
-    Bypass.pass(bypass)
-
     Airbrakex.Notifier.notify(error_to_ignore)
   end
 

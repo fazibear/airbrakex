@@ -4,11 +4,12 @@ defmodule Airbrakex.Mixfile do
   def project do
     [
       app: :airbrakex,
-      version: "0.1.7",
+      version: "0.1.8",
       elixir: "~> 1.0",
       description: "Airbrake Elixir Notifier",
       package: package(),
       deps: deps(),
+      dialyzer: dialyzer(),
       docs: [
         main: Airbrakex,
         source_url: "https://github.com/fazibear/airbrakex"
@@ -36,7 +37,16 @@ defmodule Airbrakex.Mixfile do
       {:jason, "~> 1.1"},
       {:bypass, "~> 0.8", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},
-      {:credo, "~> 1.0.0", only: :dev, runtime: false}
+      {:credo, "~> 1.0.0", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.4", only: :dev, runtime: false}
+    ]
+  end
+
+  defp dialyzer do
+    [
+      plt_add_deps: :apps_direct,
+      plt_add_apps: [:hackney, :logger, :mix],
+      flags: [:error_handling, :race_conditions, :unmatched_returns]
     ]
   end
 end

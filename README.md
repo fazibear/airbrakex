@@ -7,7 +7,7 @@ Add Airbrakex as a dependency to your `mix.exs` file:
 
 ```elixir
 defp deps do
-  [{:airbrakex, "~> 0.1.3"}]
+  [{:airbrakex, "~> 0.1.8"}]
 end
 ```
 
@@ -33,7 +33,7 @@ config :airbrakex,
   project_key: "abcdef12345",
   project_id: 123456,
   logger_level: :error,
-  environment: Mix.env,
+  environment: Mix.env
 ```
 
 #### Advanced Configuration

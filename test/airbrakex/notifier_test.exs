@@ -124,6 +124,14 @@ defmodule Airbrakex.NotifierTest do
     Airbrakex.Notifier.notify(error)
   end
 
+  test "accepts boolean as ignore value", %{bypass: bypass, error: error} do
+    Application.put_env(:airbrakex, :ignore, true)
+
+    Bypass.pass(bypass)
+
+    Airbrakex.Notifier.notify(error)
+  end
+  
   test "does not notify if error in ignore list", %{bypass: bypass} do
     Application.put_env(:airbrakex, :ignore, [SpecificError])
 

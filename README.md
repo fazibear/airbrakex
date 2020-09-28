@@ -86,7 +86,11 @@ end
 
 ### Ignore
 
-You can ignore certain types of errors by specifying `:ignore` config key:
+You can ignore certain types of errors by specifying a global `:ignore` as well as an `:ignore_backend` config key:
+
+#### Global ignore
+
+This will prevent errors from being sent from the notifier to Airbrake
 
 ```elixir
 config :airbrakex,
@@ -104,6 +108,24 @@ config :airbrakex,
   end
 ```
 
+#### Ignore Backend
+
+This is only needed if you are using the [Logger Backend](#logger-backend).
+
+`:ignore_backend` prevents logs from being sent from the backend to the notifier. For example, it can be used to prevent errors that are already being logged by the plug from double logging.
+
+```elixir
+config :airbrakex,
+  ...
+  # Function
+  ignore_backend: fn(log) ->
+    cond do
+      {_, message, _, _} = log ->
+        Enum.at(message, 2) == "MyApp.Endpoint"
+      true -> false
+    end
+  end
+```
 
 
 ## Thankx

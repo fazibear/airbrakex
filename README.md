@@ -7,7 +7,7 @@ Add Airbrakex as a dependency to your `mix.exs` file:
 
 ```elixir
 defp deps do
-  [{:airbrakex, "~> 0.1.8"}]
+  [{:airbrakex, "~> 0.1.9"}]
 end
 ```
 

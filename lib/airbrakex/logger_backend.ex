@@ -50,9 +50,14 @@ defmodule Airbrakex.LoggerBackend do
     :ok
   end
 
-  defp proceed?({Logger, _msg, _ts, meta}) do
-    Keyword.get(meta, :airbrakex, true)
+  defp proceed?({Logger, _msg, _ts, meta} = log) do
+    Keyword.get(meta, :airbrakex, true) and
+      not ignore_backend?(Application.get_env(:airbrakex, :ignore_backend), log)
   end
+
+  defp ignore_backend?(ignore, _error) when is_nil(ignore), do: false
+  defp ignore_backend?({module, function, []}, log), do: apply(module, function, [log])
+  defp ignore_backend?(ignore, log) when is_function(ignore), do: ignore.(log)
 
   defp meet_level?(lvl, min) do
     Logger.compare_levels(lvl, min) != :lt

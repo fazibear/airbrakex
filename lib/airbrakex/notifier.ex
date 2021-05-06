@@ -4,7 +4,7 @@ defmodule Airbrakex.Notifier do
   alias Airbrakex.Config
 
   @request_headers [{"Content-Type", "application/json"}]
-  @default_endpoint "https://airbrake.io"
+  @default_endpoint "https://api.airbrake.io"
   @default_env Mix.env()
 
   @info %{

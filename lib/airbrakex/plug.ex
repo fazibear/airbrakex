@@ -32,15 +32,16 @@ defmodule Airbrakex.Plug do
           exception ->
             session = Map.get(conn.private, :plug_session)
 
-            error = ExceptionParser.parse(exception)
+            error = ExceptionParser.parse(exception, __STACKTRACE__)
 
-            _ = Notifier.notify(error,
-              params: conn.params,
-              session: session,
-              context: %{url: Plug.Conn.request_url(conn)}
-            )
+            _ =
+              Notifier.notify(error,
+                params: conn.params,
+                session: session,
+                context: %{url: Plug.Conn.request_url(conn)}
+              )
 
-            reraise exception, System.stacktrace()
+            reraise exception, __STACKTRACE__
         end
       end
     end

@@ -2,14 +2,14 @@ defmodule Airbrakex.ExceptionParserTest do
   use ExUnit.Case
 
   test "parses exception" do
-    exception =
+    {exception, stacktrace} =
       try do
         IO.inspect("test", [], "")
       rescue
-        e -> e
+        e -> {e, __STACKTRACE__}
       end
 
-    parsed_exception = Airbrakex.ExceptionParser.parse(exception)
+    parsed_exception = Airbrakex.ExceptionParser.parse(exception, stacktrace)
 
     backtrace = parsed_exception[:backtrace]
     message = parsed_exception[:message]

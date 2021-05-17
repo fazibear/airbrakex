@@ -1,11 +1,11 @@
 defmodule Airbrakex.ExceptionParser do
   @moduledoc false
 
-  def parse(exception) do
+  def parse(exception, stacktrace) do
     %{
       type: exception.__struct__,
       message: Exception.message(exception),
-      backtrace: stacktrace(System.stacktrace())
+      backtrace: stacktrace(stacktrace)
     }
   end
 

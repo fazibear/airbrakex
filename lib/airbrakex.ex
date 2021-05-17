@@ -25,7 +25,7 @@ defmodule Airbrakex do
   try do
     IO.inspect("test",[],"")
   rescue
-    exception -> Airbrakex.notify(exception)
+    exception -> Airbrakex.notify(exception, __STACKTRACE__)
   end
   ```
 
@@ -56,6 +56,7 @@ defmodule Airbrakex do
   ## Parameters
 
     - exception: Exception to notify
+    - stacktrace: the __STACKTRACE__ from the catch/rescue block
     - options: Options
 
   ## Options
@@ -67,9 +68,9 @@ defmodule Airbrakex do
     - params
     - environment
   """
-  def notify(exception, options \\ []) do
+  def notify(exception, stacktrace \\ [], options \\ []) do
     exception
-    |> ExceptionParser.parse()
+    |> ExceptionParser.parse(stacktrace)
     |> Notifier.notify(options)
   end
 end

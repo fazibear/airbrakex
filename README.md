@@ -7,7 +7,7 @@ Add Airbrakex as a dependency to your `mix.exs` file:
 
 ```elixir
 defp deps do
-  [{:airbrakex, "~> 0.1.9"}]
+  [{:airbrakex, git: "https://github.com/rum-and-code/airbrakex.git", tag: "0.2.0"}]
 end
 ```
 
@@ -57,7 +57,7 @@ config :airbrakex,
 try do
   IO.inspect("test",[],"")
 rescue
-  exception -> Airbrakex.notify(exception)
+  exception -> Airbrakex.notify(exception, __STACKTRACE__)
 end
 ```
 
@@ -127,12 +127,3 @@ config :airbrakex,
   end
 ```
 
-
-## Thankx
- - [Airbrake Elixir](https://github.com/romul/airbrake-elixir)
- - [AirbrakePlug](https://github.com/romul/airbrake_plug)
- - [Rollbax](https://github.com/elixir-addicts/rollbax)
-
-## Thank you!
-
-[![Become Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=6912974)

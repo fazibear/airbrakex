@@ -4,7 +4,7 @@ defmodule Airbrakex.Mixfile do
   def project do
     [
       app: :airbrakex,
-      version: "0.1.9",
+      version: "0.2.0",
       elixir: "~> 1.0",
       description: "Airbrake Elixir Notifier",
       package: package(),
@@ -12,16 +12,16 @@ defmodule Airbrakex.Mixfile do
       dialyzer: dialyzer(),
       docs: [
         main: Airbrakex,
-        source_url: "https://github.com/fazibear/airbrakex"
+        source_url: "https://github.com/rum-and-code/airbrakex"
       ]
     ]
   end
 
   def package() do
     [
-      maintainers: ["Michał Kalbarczyk"],
+      maintainers: ["Michał Kalbarczyk", "Rum&Code"],
       licenses: ["MIT"],
-      links: %{github: "https://github.com/fazibear/airbrakex"}
+      links: %{github: "https://github.com/rum-and-code/airbrakex"}
     ]
   end
 

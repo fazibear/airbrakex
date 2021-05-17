@@ -7,7 +7,7 @@ Add Airbrakex as a dependency to your `mix.exs` file:
 
 ```elixir
 defp deps do
-  [{:airbrakex, git: "https://github.com/rum-and-code/airbrakex.git", tag: "0.2.0"}]
+  [{:airbrakex, git: "https://github.com/rum-and-code/airbrakex.git", tag: "v0.2.0"}]
 end
 ```
 

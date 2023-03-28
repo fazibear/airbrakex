@@ -21,7 +21,7 @@ defmodule Airbrakex.Notifier do
         |> add_error(error)
         |> add_context(Keyword.get(options, :context))
         |> add(:session, Keyword.get(options, :session))
-        |> add(:params, filter_parameters(Keyword.get(options, :params), Config.get(:airbrakex, :filter_parameters)))
+        |> add(:params, filter_parameters(Keyword.get(options, :params), Config.get(:airbrakex, :filter_parameters, [])))
         |> add(:environment, Keyword.get(options, :environment, %{}))
         |> Jason.encode!()
 
@@ -29,20 +29,8 @@ defmodule Airbrakex.Notifier do
     end
   end
 
-  defp filter_parameters(nil, nil) do
-    nil
-  end
-
-  defp filter_parameters(params, nil) do
-    params
-  end
-
-  defp filter_parameters(nil, _filtered_keys) do
-    nil
-  end
-
   defp filter_parameters(params, filtered_keys) do
-    params
+    (params || %{})
       |> Enum.map(&filter_parameter(&1, filtered_keys))
       |> Enum.into(%{})
   end

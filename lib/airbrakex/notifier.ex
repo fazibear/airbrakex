@@ -21,12 +21,34 @@ defmodule Airbrakex.Notifier do
         |> add_error(error)
         |> add_context(Keyword.get(options, :context))
         |> add(:session, Keyword.get(options, :session))
-        |> add(:params, Keyword.get(options, :params))
+        |> add(:params, filter_parameters(Keyword.get(options, :params), Config.get(:airbrakex, :filter_parameters)))
         |> add(:environment, Keyword.get(options, :environment, %{}))
         |> Jason.encode!()
 
       post(url(), payload, @request_headers, http_options())
     end
+  end
+
+  defp filter_parameters(nil, nil) do
+    nil
+  end
+
+  defp filter_parameters(params, nil) do
+    params
+  end
+
+  defp filter_parameters(nil, _filtered_keys) do
+    nil
+  end
+
+  defp filter_parameters(params, filtered_keys) do
+    params
+      |> Enum.map(&filter_parameter(&1, filtered_keys))
+      |> Enum.into(%{})
+  end
+
+  defp filter_parameter({key, value}, filtered_keys) do
+    if Enum.member?(filtered_keys, Atom.to_string(key)), do: {key, "***"}, else: {key, value}
   end
 
   defp add_notifier(payload) do

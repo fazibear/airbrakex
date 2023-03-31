@@ -111,6 +111,7 @@ defmodule Airbrakex.NotifierTest do
     end)
 
     Airbrakex.Notifier.notify(error, params: %{foo: "bar"})
+    Application.put_env(:airbrakex, :filter_parameters, [])
   end
 
   test "evaluates system environment if specified", %{bypass: bypass, error: error} do

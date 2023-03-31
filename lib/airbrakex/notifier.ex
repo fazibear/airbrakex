@@ -32,10 +32,9 @@ defmodule Airbrakex.Notifier do
     end
   end
 
+
   defp filter_parameters(params, filtered_keys) do
-    (params || %{})
-      |> Enum.map(&filter_parameter(&1, filtered_keys))
-      |> Enum.into(%{})
+    Enum.into(params, %{}, &filter_parameter(&1, filtered_keys))
   end
 
   defp filter_parameter({key, value}, filtered_keys) do

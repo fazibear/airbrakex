@@ -32,13 +32,14 @@ defmodule Airbrakex.Notifier do
     end
   end
 
-
   defp filter_parameters(params, filtered_keys) do
-    Enum.into(params, %{}, &filter_parameter(&1, filtered_keys))
-  end
-
-  defp filter_parameter({key, value}, filtered_keys) do
-    if Enum.member?(filtered_keys, to_string(key)), do: {key, "***"}, else: {key, value}
+    for {key, value} <- params, into: %{} do
+      if Enum.member?(filtered_keys, to_string(key)) do
+        {key, "***"}
+      else
+        {key, value}
+      end
+    end
   end
 
   defp add_notifier(payload) do

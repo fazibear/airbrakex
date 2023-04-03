@@ -98,6 +98,22 @@ defmodule Airbrakex.NotifierTest do
     Airbrakex.Notifier.notify(error, params: %{foo: "bar"})
   end
 
+  test "notifies with obfuscated params when set", %{bypass: bypass, error: error} do
+    Application.put_env(:airbrakex, :filter_parameters, ["foo"])
+
+    Bypass.expect(bypass, fn conn ->
+      opts = [parsers: [Plug.Parsers.JSON], json_decoder: Jason]
+      conn = Plug.Parsers.call(conn, Plug.Parsers.init(opts))
+
+      assert %{"foo" => "***"} == conn.body_params["params"]
+
+      Plug.Conn.resp(conn, 200, "")
+    end)
+
+    Airbrakex.Notifier.notify(error, params: %{foo: "bar"})
+    Application.put_env(:airbrakex, :filter_parameters, [])
+  end
+
   test "evaluates system environment if specified", %{bypass: bypass, error: error} do
     System.put_env("AIR_TEST_ID", "airbrakex_id")
     System.put_env("AIR_TEST_KEY", "airbrakex_key")

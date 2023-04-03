@@ -15,17 +15,30 @@ defmodule Airbrakex.Notifier do
 
   def notify(error, options \\ []) do
     if proceed?(Application.get_env(:airbrakex, :ignore), error) do
+      filter_parameters_config = Config.get(:airbrakex, :filter_parameters, [])
+      params = Keyword.get(options, :params, [])
+      filtered_params = filter_parameters(params, filter_parameters_config)
       payload =
         %{}
         |> add_notifier
         |> add_error(error)
         |> add_context(Keyword.get(options, :context))
         |> add(:session, Keyword.get(options, :session))
-        |> add(:params, Keyword.get(options, :params))
+        |> add(:params, filtered_params)
         |> add(:environment, Keyword.get(options, :environment, %{}))
         |> Jason.encode!()
 
       post(url(), payload, @request_headers, http_options())
+    end
+  end
+
+  defp filter_parameters(params, filtered_keys) do
+    for {key, value} <- params, into: %{} do
+      if Enum.member?(filtered_keys, to_string(key)) do
+        {key, "***"}
+      else
+        {key, value}
+      end
     end
   end
 

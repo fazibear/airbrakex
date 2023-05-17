@@ -12,12 +12,25 @@ defmodule Airbrakex.ExceptionParser do
   defp stacktrace(stacktrace) do
     Enum.map(stacktrace, fn
       {module, function, args, params} ->
-        file = Keyword.get(params, :file, "unknown")
+        file = Keyword.get(params, :file)
         line_number = Keyword.get(params, :line, 0)
+
+        function = if file do
+          "#{function}#{args(args)}"
+        else
+          "#{module}.#{function}#{args(args)}"
+        end
+
+        file_path = if file do
+          "(#{module}) #{file}"
+        else
+          "unknown"
+        end
+
         %{
-          file: "(#{module}) #{file}",
+          file: file_path,
           line: line_number,
-          function: "#{module}.#{function}#{args(args)}"
+          function: function
         }
     end)
   end

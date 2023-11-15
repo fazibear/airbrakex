@@ -14,7 +14,8 @@ defmodule Airbrakex.Notifier do
   }
 
   def notify(error, options \\ []) do
-    if proceed?(Application.get_env(:airbrakex, :ignore), error) do
+    skip_ignore = Keyword.get(options, :skip_ignore, false)
+    if skip_ignore || proceed?(Application.get_env(:airbrakex, :ignore), error) do
       filter_parameters_config = Config.get(:airbrakex, :filter_parameters, [])
       params = Keyword.get(options, :params, [])
       filtered_params = filter_parameters(params, filter_parameters_config)
